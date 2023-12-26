@@ -55,9 +55,9 @@ class Workers(Base):
         Integer, ForeignKey("citizenships.idCitizenship")
     )
     citizenships = relationship(
-        "Citizenships",
+        "Citizenship",
         back_populates="workers",
-        primaryjoin="citizenship_idCitizenship == Citizenship.idCitizenship",
+        primaryjoin="Workers.citizenship_idCitizenship == Citizenship.idCitizenship",
     )
 
 

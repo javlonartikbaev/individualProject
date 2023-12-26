@@ -62,3 +62,13 @@ def delete_worker(worker_id: int, db: Session = Depends(get_db)):
     db.delete(worker)
     db.commit()
     return worker
+
+
+# ----------------------------------- Create Citizenship -----------------------------------------------------
+@app.post("/citizenship/", response_model=CreateCitizenshipID)
+def create_citizenship(citizenship: CreateCitizenship, db: Session = Depends(get_db)):
+    citizenship = Citizenship(**citizenship.dict())
+    db.add(citizenship)
+    db.commit()
+    db.refresh(citizenship)
+    return citizenship

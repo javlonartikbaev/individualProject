@@ -27,6 +27,7 @@ class CreateWorker(BaseModel):
     address: str
     phoneNumber: str
     user_idUser: int
+    citizenship_idCitizenship: int
 
 
 class CreateWorkerID(CreateWorker):
@@ -34,3 +35,12 @@ class CreateWorkerID(CreateWorker):
 
 
 # ---------------------------------------------------------------------------------------------
+
+
+# ----------------------- DataBase Citizenship---------------------------------------------------
+class CreateCitizenship(BaseModel):
+    nameCitizenship: str
+
+
+class CreateCitizenshipID(CreateCitizenship):
+    idCitizenship: int
