@@ -1,5 +1,3 @@
-
-
 import datetime
 
 from sqlalchemy import (
@@ -53,8 +51,23 @@ class Workers(Base):
         primaryjoin="Workers.user_idUser == Users.idUser",
     )
 
+    citizenship_idCitizenship = Column(
+        Integer, ForeignKey("citizenships.idCitizenship")
+    )
+    citizenships = relationship(
+        "Citizenships",
+        back_populates="workers",
+        primaryjoin="citizenship_idCitizenship == Citizenship.idCitizenship",
+    )
+
 
 # -----------------------------------------------------------------------------------------------
 
-# --------------------------------- DataBase Profession -----------------------------------------
 
+# --------------------------------- DataBase Citizenship -----------------------------------------
+class Citizenship(Base):
+    __tablename__ = "citizenships"
+
+    idCitizenship = Column(Integer, primary_key=True, autoincrement=True)
+    nameCitizenship = Column(String(45), unique=True, nullable=False)
+    workers = relationship("Workers", back_populates="citizenships")

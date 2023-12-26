@@ -24,6 +24,7 @@ def get_db():
 app = FastAPI()
 
 
+# ----------------------------------------- Create user -----------------------------------------
 @app.post("/user/", response_model=CreateUserID)
 def create_user(user: CreateUser, db: Session = Depends(get_db)):
     new_user = Users(**user.dict())
@@ -33,6 +34,7 @@ def create_user(user: CreateUser, db: Session = Depends(get_db)):
     return new_user
 
 
+# ----------------------------------- Create Worker -----------------------------------------------------
 @app.post("/worker/", response_model=CreateWorkerID)
 def create_worker(worker: CreateWorker, db: Session = Depends(get_db)):
     new_worker = Workers(**worker.dict())
@@ -51,7 +53,7 @@ def get_workers(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     return workers
 
 
-# Удаление работника
+# ------------------------------------ Удаление работника  ------------------------------------------
 @app.delete("/workers/{id}", response_model=CreateWorker)
 def delete_worker(worker_id: int, db: Session = Depends(get_db)):
     worker = db.query(Workers).filter(Workers.idWorkers == worker_id).first()

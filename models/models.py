@@ -1,5 +1,3 @@
-
-
 from datetime import datetime
 
 from pydantic import BaseModel
@@ -33,5 +31,6 @@ class CreateWorker(BaseModel):
 
 class CreateWorkerID(CreateWorker):
     idWorkers: int
+
 
 # ---------------------------------------------------------------------------------------------
