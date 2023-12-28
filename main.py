@@ -72,3 +72,25 @@ def create_citizenship(citizenship: CreateCitizenship, db: Session = Depends(get
     db.commit()
     db.refresh(citizenship)
     return citizenship
+
+
+# ----------------------------------- Create Skills -----------------------------------------------------
+@app.post("/skills/", response_model=CreateSkillID)
+def create_skill(skill: CreateSkill, db: Session = Depends(get_db)):
+    new_skill = Skill(**skill.dict())
+    db.add(new_skill)
+    db.commit()
+    db.refresh(new_skill)
+    return new_skill
+
+
+# create Worker and Skill reletionship
+@app.post("/skills{id}/", response_model=WorkerSkillID)
+def create_skill_and_worker(
+    workerSkill: Worker_has_skill, db: Session = Depends(get_db)
+):
+    workerWithskill = WorkerAndSkill(**workerSkill.dict())
+    db.add(workerWithskill)
+    db.commit()
+    db.refresh(workerWithskill)
+    return workerWithskill

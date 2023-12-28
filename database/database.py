@@ -9,6 +9,7 @@ from sqlalchemy import (
     create_engine,
     Column,
     TIMESTAMP,
+    Table,
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session, relationship
@@ -31,6 +32,15 @@ class Users(Base):
 
 
 # ---------------------------------------------------------------------------------------------
+#
+# Worker_has_skill = Table(
+#     "workers_has_skills",
+#     Base.metadata,
+#     Column("idWorkerHasSkill", Integer, primary_key=True, autoincrement=True),
+#     Column("skill_id", Integer, ForeignKey("skills.idSkill")),
+#     Column("worker_id", Integer, ForeignKey("workers.idWorkers")),
+# )
+
 
 # -------------------------------  DataBase Worker --------------------------------------------
 
@@ -59,6 +69,9 @@ class Workers(Base):
         back_populates="workers",
         primaryjoin="Workers.citizenship_idCitizenship == Citizenship.idCitizenship",
     )
+    skills = relationship(
+        "Skill", secondary="workers_and_skills", back_populates="workers"
+    )
 
 
 # -----------------------------------------------------------------------------------------------
@@ -71,3 +84,31 @@ class Citizenship(Base):
     idCitizenship = Column(Integer, primary_key=True, autoincrement=True)
     nameCitizenship = Column(String(45), unique=True, nullable=False)
     workers = relationship("Workers", back_populates="citizenships")
+
+
+# -----------------------------------------------------------------------------------------------
+
+
+# --------------------------------- DataBase Citizenship -----------------------------------------
+
+
+class Skill(Base):
+    __tablename__ = "skills"
+
+    idSkill = Column(Integer, primary_key=True, autoincrement=True)
+    nameSkill = Column(String(45), unique=True, nullable=False)
+    workers = relationship(
+        "Workers", secondary="workers_and_skills", back_populates="skills"
+    )
+
+
+# ---------------------------------------------------------------------------------------------
+
+# -------------------------------- Worker has skill ------------------------------------------
+
+
+class WorkerAndSkill(Base):
+    __tablename__ = "workers_and_skills"
+
+    worker_id = Column(Integer, ForeignKey("workers.idWorkers"), primary_key=True)
+    skill_id = Column(Integer, ForeignKey("skills.idSkill"), primary_key=True)

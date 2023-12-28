@@ -44,3 +44,28 @@ class CreateCitizenship(BaseModel):
 
 class CreateCitizenshipID(CreateCitizenship):
     idCitizenship: int
+
+
+# -------------------------------------------------------------------------------------------
+
+
+# -------------------------- create skills --------------------------------------------------
+class CreateSkill(BaseModel):
+    nameSkill: str
+
+
+class CreateSkillID(CreateSkill):
+    idSkill: int
+
+
+# ----------------------------------------------------------------------------------
+
+
+# ------------------------ create worker's skill ---------------------------------------
+class Worker_has_skill(BaseModel):
+    skill_id: int
+    worker_id: int
+
+
+class WorkerSkillID(Worker_has_skill):
+    idWorkerAdnSkill: int
