@@ -76,6 +76,12 @@ class Workers(Base):
         "ProfessionCategoriesORM", back_populates="workersProfession"
     )
 
+    university_education = relationship(
+        "UniversityEducationORM",
+        secondary="WorkerUniversityEducation",
+        back_populates="worker_education",
+    )
+
 
 # -----------------------------------------------------------------------------------------------
 
@@ -156,3 +162,60 @@ class ProfessionCategoriesORM(Base):
 # ----------------------------------- University and Education ---------------------------------------------------------
 
 
+class UniversityORM(Base):
+    __tablename__ = "university"
+
+    idUniversity = Column(Integer, primary_key=True, autoincrement=True)
+    nameUniversity = Column(String(50))
+    nameFaculty = Column(String(50))
+    specialization = Column(String(50))
+    dateOfStart = Column(DateTime)
+    dateOfEnd = Column(DateTime)
+    education_relationship = relationship(
+        "EducationORM",
+        secondary="universityEducation",
+        back_populates="university_relationship",
+    )
+
+
+class EducationORM(Base):
+    __tablename__ = "education"
+
+    idEducation = Column(Integer, primary_key=True, autoincrement=True)
+    nameEducation = Column(String(50))
+    university_relationship = relationship(
+        "UniversityORM",
+        secondary="universityEducation",
+        back_populates="education_relationship",
+    )
+
+
+class UniversityEducationORM(Base):
+    __tablename__ = "universityEducation"
+
+    idUniversityEducation = Column(Integer, primary_key=True, autoincrement=True)
+    university_id = Column(
+        Integer, ForeignKey("university.idUniversity"), primary_key=True
+    )
+    education_id = Column(
+        Integer, ForeignKey("education.idEducation"), primary_key=True
+    )
+    worker_education = relationship(
+        "Workers",
+        secondary="WorkerUniversityEducation",
+        back_populates="university_education",
+    )
+
+
+# ------------------------------------------------------------------------------------------------------
+class WorkerUniversityEducationORM(Base):
+    __tablename__ = "WorkerUniversityEducation"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+
+    worker_idWorker = Column(Integer, ForeignKey("workers.idWorkers"), primary_key=True)
+    education_university = Column(
+        Integer,
+        ForeignKey("universityEducation.idUniversityEducation"),
+        primary_key=True,
+    )

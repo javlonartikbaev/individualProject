@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from pydantic import BaseModel
 
 
@@ -83,6 +82,7 @@ class CreateProfessionID(CreateProfession):
 # -------------------------------------------------------------------------------------------
 
 
+# ---------------------------------------- Profession and Categories -------------------------
 class CreateCategories(BaseModel):
     nameCategories: str
 
@@ -94,3 +94,53 @@ class CreateCategoriesID(CreateCategories):
 class ProfessionCategories(BaseModel):
     categories_id: int
     profession_id: int
+
+
+class ProfessionCategoriesID(ProfessionCategories):
+    ProfessionCategories_id: int
+
+
+# ----------------------------------------------------------------------------------------------------------------
+
+
+# ------------------------------------ University and Education --------------------------------------------------
+class CreateUniversity(BaseModel):
+    nameUniversity: str
+    nameFaculty: str
+    specialization: str
+    dateOfStart: datetime
+    dateOfEnd: datetime
+
+
+class CreateUniversityID(CreateUniversity):
+    idUniversity: int
+
+
+# -----------------------------------------------------------
+class CreateEducation(BaseModel):
+    nameEducation: str
+
+
+class CreateEducationID(CreateEducation):
+    idEducation: int
+
+
+# -----------------------------------------------------------
+
+
+class CreateUniversityEducation(BaseModel):
+    university_id: int
+    education_id: int
+
+
+class CreateUniversityEducationID(CreateUniversityEducation):
+    idUniversityEducation: int
+
+
+class CreateWorkerUniversityEducation(BaseModel):
+    worker_idWorker: int
+    education_university: int
+
+
+class CreateWorkerUniversityEducationID(CreateWorkerUniversityEducation):
+    id: int

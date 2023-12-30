@@ -9,7 +9,6 @@ from models.models import *
 
 DATABASE_URL = "mysql+pymysql://root:qwerty123@localhost:3306/DatabaseHH"
 engine = create_engine(DATABASE_URL)
-
 Base.metadata.create_all(bind=engine)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -110,7 +109,7 @@ def create_profession(profession: CreateProfession, db: Session = Depends(get_db
     return new_profession
 
 
-@app.post("/profession{id}/", response_model=ProfessionCategories)
+@app.post("/profession{id}/", response_model=ProfessionCategoriesID)
 def create_profession_categories(
     profession_categories: ProfessionCategories, db: Session = Depends(get_db)
 ):
@@ -128,3 +127,47 @@ def categories(new_categories: CreateCategories, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_categories)
     return new_categories
+
+
+# ---------------------------------------------------------------------------------------------------
+# ----------------------------- University and Education --------------------------------------------
+
+
+@app.post("/university/", response_model=CreateUniversityID)
+def university(new_university: CreateUniversity, db: Session = Depends(get_db)):
+    new_university = UniversityORM(**new_university.dict())
+    db.add(new_university)
+    db.commit()
+    db.refresh(new_university)
+    return new_university
+
+
+@app.post("/education/", response_model=CreateEducationID)
+def education(new_education: CreateEducation, db: Session = Depends(get_db)):
+    new_education = EducationORM(**new_education.dict())
+    db.add(new_education)
+    db.commit()
+    db.refresh(new_education)
+    return new_education
+
+
+@app.post("/univerEducation{id}/", response_model=CreateUniversityEducationID)
+def univerEducation(
+    univerEducation: CreateUniversityEducation, db: Session = Depends(get_db)
+):
+    univerEducation = UniversityEducationORM(**univerEducation.dict())
+    db.add(univerEducation)
+    db.commit()
+    db.refresh(univerEducation)
+    return univerEducation
+
+
+@app.post("/workerEducation/", response_model=CreateWorkerUniversityEducationID)
+def workerEducation(
+    workerEducation: CreateWorkerUniversityEducation, db: Session = Depends(get_db)
+):
+    workerEducation = WorkerUniversityEducationORM(**workerEducation.dict())
+    db.add(workerEducation)
+    db.commit()
+    db.refresh(workerEducation)
+    return workerEducation
