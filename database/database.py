@@ -28,7 +28,7 @@ class Users(Base):
     password = Column(String(45))
     email = Column(String(45), unique=True)
     dateRegister = Column(TIMESTAMP, default=datetime.datetime.utcnow())
-    workers = relationship("Workers", back_populates="users")
+    workers = relationship("Workers", back_populates="users", uselist=False)
 
 
 # ---------------------------------------------------------------------------------------------
@@ -43,8 +43,6 @@ class Users(Base):
 
 
 # -------------------------------  DataBase Worker --------------------------------------------
-
-
 class Workers(Base):
     __tablename__ = "workers"
 
@@ -60,7 +58,6 @@ class Workers(Base):
         back_populates="workers",
         primaryjoin="Workers.user_idUser == Users.idUser",
     )
-
     citizenship_idCitizenship = Column(
         Integer, ForeignKey("citizenships.idCitizenship")
     )
@@ -71,6 +68,12 @@ class Workers(Base):
     )
     skills = relationship(
         "Skill", secondary="workers_and_skills", back_populates="workers"
+    )
+    professionCategoriesID = Column(
+        Integer, ForeignKey("professionCategories.ProfessionCategories_id")
+    )
+    professionCategories = relationship(
+        "ProfessionCategoriesORM", back_populates="workersProfession"
     )
 
 
@@ -87,11 +90,7 @@ class Citizenship(Base):
 
 
 # -----------------------------------------------------------------------------------------------
-
-
 # --------------------------------- DataBase Citizenship -----------------------------------------
-
-
 class Skill(Base):
     __tablename__ = "skills"
 
@@ -112,3 +111,48 @@ class WorkerAndSkill(Base):
 
     worker_id = Column(Integer, ForeignKey("workers.idWorkers"), primary_key=True)
     skill_id = Column(Integer, ForeignKey("skills.idSkill"), primary_key=True)
+
+
+# --------------------------- Profession -------------------------------------------------------
+
+
+class ProfessionOrm(Base):
+    __tablename__ = "professions"
+
+    idProfession = Column(Integer, primary_key=True, autoincrement=True)
+    nameProfession = Column(String(50))
+    categories = relationship(
+        "CategorisOrm", secondary="professionCategories", back_populates="proffesion"
+    )
+
+
+class CategorisOrm(Base):
+    __tablename__ = "categories"
+
+    idCategories = Column(Integer, primary_key=True, autoincrement=True)
+    nameCategories = Column(String(50))
+    proffesion = relationship(
+        "ProfessionOrm",
+        secondary="professionCategories",
+        back_populates="categories",
+    )
+
+
+class ProfessionCategoriesORM(Base):
+    __tablename__ = "professionCategories"
+
+    ProfessionCategories_id = Column(Integer, primary_key=True, autoincrement=True)
+    profession_id = Column(
+        Integer, ForeignKey("professions.idProfession"), primary_key=True
+    )
+    categories_id = Column(
+        Integer, ForeignKey("categories.idCategories"), primary_key=True
+    )
+    workersProfession = relationship("Workers", back_populates="professionCategories")
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------- University and Education ---------------------------------------------------------
+
+

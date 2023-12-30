@@ -25,6 +25,7 @@ class CreateWorker(BaseModel):
     sureName: str
     dateOfBirth: datetime
     address: str
+    professionCategoriesID: int
     phoneNumber: str
     user_idUser: int
     citizenship_idCitizenship: int
@@ -67,5 +68,29 @@ class Worker_has_skill(BaseModel):
     worker_id: int
 
 
-class WorkerSkillID(Worker_has_skill):
-    idWorkerAdnSkill: int
+# ----------------------------------------------------------------------------------------
+
+
+# ------------------------------- Profession --------------------------------------------
+class CreateProfession(BaseModel):
+    nameProfession: str
+
+
+class CreateProfessionID(CreateProfession):
+    idProfession: int
+
+
+# -------------------------------------------------------------------------------------------
+
+
+class CreateCategories(BaseModel):
+    nameCategories: str
+
+
+class CreateCategoriesID(CreateCategories):
+    idCategories: int
+
+
+class ProfessionCategories(BaseModel):
+    categories_id: int
+    profession_id: int

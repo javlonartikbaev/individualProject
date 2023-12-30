@@ -9,6 +9,7 @@ from models.models import *
 
 DATABASE_URL = "mysql+pymysql://root:qwerty123@localhost:3306/DatabaseHH"
 engine = create_engine(DATABASE_URL)
+
 Base.metadata.create_all(bind=engine)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -85,7 +86,7 @@ def create_skill(skill: CreateSkill, db: Session = Depends(get_db)):
 
 
 # create Worker and Skill reletionship
-@app.post("/skills{id}/", response_model=WorkerSkillID)
+@app.post("/skills{id}/", response_model=Worker_has_skill)
 def create_skill_and_worker(
     workerSkill: Worker_has_skill, db: Session = Depends(get_db)
 ):
@@ -94,3 +95,36 @@ def create_skill_and_worker(
     db.commit()
     db.refresh(workerWithskill)
     return workerWithskill
+
+
+# --------------------------------------------------------------------------------------------------------
+
+
+# ------------------------------ Create Profession -------------------------------------------------------
+@app.post("/profession/", response_model=CreateProfessionID)
+def create_profession(profession: CreateProfession, db: Session = Depends(get_db)):
+    new_profession = ProfessionOrm(**profession.dict())
+    db.add(new_profession)
+    db.commit()
+    db.refresh(new_profession)
+    return new_profession
+
+
+@app.post("/profession{id}/", response_model=ProfessionCategories)
+def create_profession_categories(
+    profession_categories: ProfessionCategories, db: Session = Depends(get_db)
+):
+    new_profession_categories = ProfessionCategoriesORM(**profession_categories.dict())
+    db.add(new_profession_categories)
+    db.commit()
+    db.refresh(new_profession_categories)
+    return new_profession_categories
+
+
+@app.post("/categories/", response_model=CreateCategoriesID)
+def categories(new_categories: CreateCategories, db: Session = Depends(get_db)):
+    new_categories = CategorisOrm(**new_categories.dict())
+    db.add(new_categories)
+    db.commit()
+    db.refresh(new_categories)
+    return new_categories
