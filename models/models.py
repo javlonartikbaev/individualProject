@@ -169,3 +169,39 @@ class CreateWorkerExperience(BaseModel):
 
 class CreateWorkerExperienceID(CreateWorkerExperience):
     idWorkerExperience: int
+
+
+# -------------------------------------------------------------------------------------------------------
+
+
+# ------------------------------ Employer Application ------------------------------------------------
+class CreateCompany(BaseModel):
+    companyName: str
+    address: str
+
+
+class CreateCompanyID(CreateCompany):
+    idCompany: int
+
+
+class CreateEmployerApplication(BaseModel):
+    title: str
+    Salary: int
+    id_company: int
+    someInformation: str
+    status: bool
+    user_id: int
+    professionAndCategories: int
+
+
+class CreateEmployerApplicationID(CreateEmployerApplication):
+    idApplication: int
+
+
+class CreateWorkerApplication(BaseModel):
+    id_worker: int
+    id_app: int
+
+
+class CreateWorkerApplicationID(CreateWorkerApplication):
+    idWorkerApplication: int

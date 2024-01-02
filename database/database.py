@@ -29,6 +29,9 @@ class Users(Base):
     email = Column(String(45), unique=True)
     dateRegister = Column(TIMESTAMP, default=datetime.datetime.utcnow())
     workers = relationship("Workers", back_populates="users", uselist=False)
+    application = relationship(
+        "EmployerApplicationORM", back_populates="user_relationship"
+    )
 
 
 # ---------------------------------------------------------------------------------------------
@@ -85,6 +88,11 @@ class Workers(Base):
         "ExperienceORM",
         secondary="WorkerExperience",
         back_populates="workers_experience",
+    )
+    app_relationship = relationship(
+        "EmployerApplicationORM",
+        secondary="worker_application",
+        back_populates="worker_relationship",
     )
 
 
@@ -249,3 +257,44 @@ class WorkerExperienceORM(Base):
 
     WorkerExperience_id = Column(Integer, ForeignKey("workers.idWorkers"))
     experience_id = Column(Integer, ForeignKey("experiences.idExperience"))
+
+
+# ------------------------------------------------------------------------------------------------------------
+
+# ------------------------------ Employers -----------------------------------------------------------------
+
+
+class CompanyORM(Base):
+    __tablename__ = "companies"
+
+    idCompany = Column(Integer, primary_key=True, autoincrement=True)
+    companyName = Column(String(60))
+    address = Column(String(60))
+
+
+class EmployerApplicationORM(Base):
+    __tablename__ = "employerApplication"
+
+    idApplication = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String(60))
+    Salary = Column(Integer)
+    id_company = Column(Integer, ForeignKey("companies.idCompany"))
+    someInformation = Column(String(255))
+    status = Column(Boolean)
+    user_id = Column(Integer, ForeignKey("users.idUser"))
+    professionAndCategories = Column(
+        Integer, ForeignKey("professionCategories.ProfessionCategories_id")
+    )
+    user_relationship = relationship("Users", back_populates="application")
+    worker_relationship = relationship(
+        "Workers", secondary="worker_application", back_populates="app_relationship"
+    )
+
+
+class Worker_ApplicationORM(Base):
+    __tablename__ = "worker_application"
+
+    idWorkerApplication = Column(Integer, primary_key=True, autoincrement=True)
+
+    id_worker = Column(Integer, ForeignKey("workers.idWorkers"))
+    id_app = Column(Integer, ForeignKey("employerApplication.idApplication"))

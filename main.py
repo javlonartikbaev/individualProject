@@ -191,3 +191,34 @@ def workerExperience(
     db.commit()
     db.refresh(new_workerExperience)
     return new_workerExperience
+
+
+# -------------------------------------------------------------------------------------------------------
+# ------------------------------ Employer Application ------------------------------------------------
+
+
+@app.post("/companies/", response_model=CreateCompanyID)
+def addCompanies(company: CreateCompany, db: Session = Depends(get_db)):
+    new_company = CompanyORM(**company.dict())
+    db.add(new_company)
+    db.commit()
+    db.refresh(new_company)
+    return new_company
+
+
+@app.post("/application/", response_model=CreateEmployerApplicationID)
+def addApplication(app: CreateEmployerApplication, db: Session = Depends(get_db)):
+    new_app = EmployerApplicationORM(**app.dict())
+    db.add(new_app)
+    db.commit()
+    db.refresh(new_app)
+    return new_app
+
+
+@app.post("/workerapp/", response_model=CreateWorkerApplicationID)
+def addWorkerApp(workerApp: CreateWorkerApplication, db: Session = Depends(get_db)):
+    worker_app = Worker_ApplicationORM(**workerApp.dict())
+    db.add(worker_app)
+    db.commit()
+    db.refresh(worker_app)
+    return worker_app
