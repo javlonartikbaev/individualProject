@@ -171,3 +171,23 @@ def workerEducation(
     db.commit()
     db.refresh(workerEducation)
     return workerEducation
+
+
+@app.post("/experience/", response_model=CreateExperienceID)
+def experience(experience: CreateExperience, db: Session = Depends(get_db)):
+    new_experience = ExperienceORM(**experience.dict())
+    db.add(new_experience)
+    db.commit()
+    db.refresh(new_experience)
+    return new_experience
+
+
+@app.post("/workerExperience/", response_model=CreateWorkerExperienceID)
+def workerExperience(
+    workerExperience: CreateWorkerExperience, db: Session = Depends(get_db)
+):
+    new_workerExperience = WorkerExperienceORM(**workerExperience.dict())
+    db.add(new_workerExperience)
+    db.commit()
+    db.refresh(new_workerExperience)
+    return new_workerExperience

@@ -81,6 +81,11 @@ class Workers(Base):
         secondary="WorkerUniversityEducation",
         back_populates="worker_education",
     )
+    experience_relationship = relationship(
+        "ExperienceORM",
+        secondary="WorkerExperience",
+        back_populates="workers_experience",
+    )
 
 
 # -----------------------------------------------------------------------------------------------
@@ -219,3 +224,28 @@ class WorkerUniversityEducationORM(Base):
         ForeignKey("universityEducation.idUniversityEducation"),
         primary_key=True,
     )
+
+
+# ------------------------------------------------------------------------------------------------------
+# ----------------------------------------Experiences -------------------------------------------------------------
+class ExperienceORM(Base):
+    __tablename__ = "experiences"
+
+    idExperience = Column(Integer, primary_key=True, autoincrement=True)
+    nameCompany = Column(String(60))
+    dateOfStart = Column(DateTime)
+    dateOfEnd = Column(DateTime)
+    workers_experience = relationship(
+        "Workers",
+        secondary="WorkerExperience",
+        back_populates="experience_relationship",
+    )
+
+
+class WorkerExperienceORM(Base):
+    __tablename__ = "WorkerExperience"
+
+    idWorkerExperience = Column(Integer, primary_key=True, autoincrement=True)
+
+    WorkerExperience_id = Column(Integer, ForeignKey("workers.idWorkers"))
+    experience_id = Column(Integer, ForeignKey("experiences.idExperience"))

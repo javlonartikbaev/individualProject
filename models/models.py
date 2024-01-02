@@ -144,3 +144,28 @@ class CreateWorkerUniversityEducation(BaseModel):
 
 class CreateWorkerUniversityEducationID(CreateWorkerUniversityEducation):
     id: int
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+
+# ------------------------------ Experience ----------------------------------------------------------------------------
+
+
+class CreateExperience(BaseModel):
+    nameCompany: str
+    dateOfStart: datetime
+    dateOfEnd: datetime
+
+
+class CreateExperienceID(CreateExperience):
+    idExperience: int
+
+
+# ------------------------------------------------------
+class CreateWorkerExperience(BaseModel):
+    WorkerExperience_id: int
+    experience_id: int
+
+
+class CreateWorkerExperienceID(CreateWorkerExperience):
+    idWorkerExperience: int
