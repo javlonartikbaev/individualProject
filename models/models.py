@@ -1,5 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel
+from typing import Optional
 
 
 # ----------------------------------- Data Base User ---------------------------------------------------
@@ -8,6 +9,7 @@ class CreateUser(BaseModel):
     password: str
     email: str
     dateRegister: datetime = datetime.now()
+    dateUpdate: datetime = datetime.now()
 
 
 class CreateUserID(CreateUser):

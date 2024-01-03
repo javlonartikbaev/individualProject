@@ -9,6 +9,7 @@ from models.models import *
 
 DATABASE_URL = "mysql+pymysql://root:qwerty123@localhost:3306/DatabaseHH"
 engine = create_engine(DATABASE_URL)
+
 Base.metadata.create_all(bind=engine)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -222,3 +223,29 @@ def addWorkerApp(workerApp: CreateWorkerApplication, db: Session = Depends(get_d
     db.commit()
     db.refresh(worker_app)
     return worker_app
+
+
+@app.put("/worker/{worker_id}", response_model=CreateWorkerID)
+def update_worker(worker_id: int, worker: CreateWorker, db: Session = Depends(get_db)):
+    db_worker = db.query(Workers).filter(Workers.idWorkers == worker_id).first()
+    if db_worker:
+        for attr, value in worker.dict().items():
+            setattr(db_worker, attr, value)
+        db.commit()
+        db.refresh(db_worker)
+        return db_worker
+    raise HTTPException(status_code=404, detail="Not found")
+
+
+@app.put("/user/{user_id}", response_model=CreateUserID)
+def update_user(user_id: int, user: CreateUser, db: Session = Depends(get_db)):
+    db_user = db.query(Users).filter(Users.idUser == user_id).first()
+    if db_user:
+        for attr, value in user.dict().items():
+            if attr == "dateRegister":
+                continue
+            setattr(db_user, attr, value)
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+    raise HTTPException(status_code=404, detail="Not found")

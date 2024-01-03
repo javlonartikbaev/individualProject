@@ -12,7 +12,7 @@ from sqlalchemy import (
     Table,
 )
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session, relationship
+from sqlalchemy.orm import sessionmaker, Session, relationship, Mapped
 import pymysql
 
 
@@ -27,7 +27,9 @@ class Users(Base):
     login = Column(String(50), unique=True)
     password = Column(String(45))
     email = Column(String(45), unique=True)
-    dateRegister = Column(TIMESTAMP, default=datetime.datetime.utcnow())
+    dateRegister = Column(DateTime, default=datetime.datetime.utcnow())
+    dateUpdate = Column(DateTime, nullable=True)
+
     workers = relationship("Workers", back_populates="users", uselist=False)
     application = relationship(
         "EmployerApplicationORM", back_populates="user_relationship"
@@ -35,14 +37,6 @@ class Users(Base):
 
 
 # ---------------------------------------------------------------------------------------------
-#
-# Worker_has_skill = Table(
-#     "workers_has_skills",
-#     Base.metadata,
-#     Column("idWorkerHasSkill", Integer, primary_key=True, autoincrement=True),
-#     Column("skill_id", Integer, ForeignKey("skills.idSkill")),
-#     Column("worker_id", Integer, ForeignKey("workers.idWorkers")),
-# )
 
 
 # -------------------------------  DataBase Worker --------------------------------------------
@@ -55,7 +49,7 @@ class Workers(Base):
     dateOfBirth = Column(DateTime)
     address = Column(String(45))
     phoneNumber = Column(String(45))
-    user_idUser = Column(Integer, ForeignKey("users.idUser"))
+    user_idUser = Column(Integer, ForeignKey("users.idUser"), unique=True)
     users = relationship(
         "Users",
         back_populates="workers",
