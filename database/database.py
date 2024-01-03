@@ -276,6 +276,8 @@ class EmployerApplicationORM(Base):
     someInformation = Column(String(255))
     status = Column(Boolean)
     user_id = Column(Integer, ForeignKey("users.idUser"))
+    dateRegister = Column(DateTime, default=datetime.datetime.utcnow())
+    dateUpdate = Column(DateTime, nullable=True)
     professionAndCategories = Column(
         Integer, ForeignKey("professionCategories.ProfessionCategories_id")
     )

@@ -59,7 +59,7 @@ def get_workers(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
 def delete_worker(worker_id: int, db: Session = Depends(get_db)):
     worker = db.query(Workers).filter(Workers.idWorkers == worker_id).first()
     if not worker:
-        raise HTTPException(status_code=404, detail="Todo not found")
+        raise HTTPException(status_code=404, detail="Worker not found")
     db.delete(worker)
     db.commit()
     return worker
@@ -225,6 +225,7 @@ def addWorkerApp(workerApp: CreateWorkerApplication, db: Session = Depends(get_d
     return worker_app
 
 
+# edit Worker
 @app.put("/worker/{worker_id}", response_model=CreateWorkerID)
 def update_worker(worker_id: int, worker: CreateWorker, db: Session = Depends(get_db)):
     db_worker = db.query(Workers).filter(Workers.idWorkers == worker_id).first()
@@ -237,6 +238,7 @@ def update_worker(worker_id: int, worker: CreateWorker, db: Session = Depends(ge
     raise HTTPException(status_code=404, detail="Not found")
 
 
+# Edit user
 @app.put("/user/{user_id}", response_model=CreateUserID)
 def update_user(user_id: int, user: CreateUser, db: Session = Depends(get_db)):
     db_user = db.query(Users).filter(Users.idUser == user_id).first()
@@ -249,3 +251,42 @@ def update_user(user_id: int, user: CreateUser, db: Session = Depends(get_db)):
         db.refresh(db_user)
         return db_user
     raise HTTPException(status_code=404, detail="Not found")
+
+
+# edit App
+@app.put("/application/{app_id}", response_model=CreateEmployerApplicationID)
+def update_app(
+    app_id: int, app: CreateEmployerApplication, db: Session = Depends(get_db)
+):
+    db_app = (
+        db.query(EmployerApplicationORM)
+        .filter(EmployerApplicationORM.idApplication == app_id)
+        .first()
+    )
+    if db_app:
+        for attr, value in app.dict().items():
+            if attr == "dateRegister":
+                continue
+            setattr(db_app, attr, value)
+        db.commit()
+        db.refresh(db_app)
+        return db_app
+    raise HTTPException(status_code=404, detail="Not found")
+
+
+@app.delete("/application/{id}", response_model=CreateEmployerApplicationID)
+def delete_app(app_id: int, db: Session = Depends(get_db)):
+    app = (
+        db.query(EmployerApplicationORM)
+        .filter(EmployerApplicationORM.idApplication == app_id)
+        .first()
+    )
+    if not app:
+        raise HTTPException(status_code=404, detail="Application not found")
+    db.delete(app)
+    db.commit()
+    return app
+
+
+# ----------------- Search -----------------------------------------------
+

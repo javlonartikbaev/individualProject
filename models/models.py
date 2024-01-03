@@ -194,6 +194,8 @@ class CreateEmployerApplication(BaseModel):
     status: bool
     user_id: int
     professionAndCategories: int
+    dateRegister: datetime = datetime.now()
+    dateUpdate: datetime = datetime.now()
 
 
 class CreateEmployerApplicationID(CreateEmployerApplication):
