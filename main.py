@@ -289,4 +289,22 @@ def delete_app(app_id: int, db: Session = Depends(get_db)):
 
 
 # ----------------- Search -----------------------------------------------
+@app.get("/applications/", response_model=List[CreateEmployerApplicationID])
+def get_app(
+    profession_categories: int,
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db),
+):
+    apps = (
+        db.query(EmployerApplicationORM)
+        .filter(EmployerApplicationORM.professionAndCategories == profession_categories)
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
 
+    if not apps:
+        raise HTTPException(status_code=404, detail="Applications not found")
+
+    return apps
