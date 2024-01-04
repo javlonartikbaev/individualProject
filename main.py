@@ -1,5 +1,5 @@
 from typing import List
-
+import psycopg2
 from fastapi import FastAPI, HTTPException, status
 from sqlalchemy.ext.declarative import declarative_base
 from fastapi import FastAPI, Depends, HTTPException
@@ -7,9 +7,9 @@ from database.database import *
 from models.models import *
 
 
-DATABASE_URL = "mysql+pymysql://root:qwerty123@localhost:3306/DatabaseHH"
+DATABASE_URL = "postgresql://root:t2Gcpmf2xUT1iI3AXe5DaJSj5DFjkCvW@dpg-cmb2j96d3nmc73em6f3g-a.singapore-postgres.render.com/databasehh"
 engine = create_engine(DATABASE_URL)
-
+Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
