@@ -1,5 +1,5 @@
 from typing import List
-
+import psycopg2
 from fastapi import FastAPI, HTTPException, status
 from sqlalchemy.ext.declarative import declarative_base
 from fastapi import FastAPI, Depends, HTTPException
