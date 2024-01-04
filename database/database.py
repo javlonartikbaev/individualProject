@@ -155,12 +155,8 @@ class ProfessionCategoriesORM(Base):
     __tablename__ = "professionCategories"
 
     ProfessionCategories_id = Column(Integer, primary_key=True, autoincrement=True)
-    profession_id = Column(
-        Integer, ForeignKey("professions.idProfession"), primary_key=True
-    )
-    categories_id = Column(
-        Integer, ForeignKey("categories.idCategories"), primary_key=True
-    )
+    profession_id = Column(Integer, ForeignKey("professions.idProfession"))
+    categories_id = Column(Integer, ForeignKey("categories.idCategories"))
     workersProfession = relationship("Workers", back_populates="professionCategories")
 
 
@@ -201,12 +197,8 @@ class UniversityEducationORM(Base):
     __tablename__ = "universityEducation"
 
     idUniversityEducation = Column(Integer, primary_key=True, autoincrement=True)
-    university_id = Column(
-        Integer, ForeignKey("university.idUniversity"), primary_key=True
-    )
-    education_id = Column(
-        Integer, ForeignKey("education.idEducation"), primary_key=True
-    )
+    university_id = Column(Integer, ForeignKey("university.idUniversity"))
+    education_id = Column(Integer, ForeignKey("education.idEducation"))
     worker_education = relationship(
         "Workers",
         secondary="WorkerUniversityEducation",
@@ -220,11 +212,9 @@ class WorkerUniversityEducationORM(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
 
-    worker_idWorker = Column(Integer, ForeignKey("workers.idWorkers"), primary_key=True)
+    worker_idWorker = Column(Integer, ForeignKey("workers.idWorkers"))
     education_university = Column(
-        Integer,
-        ForeignKey("universityEducation.idUniversityEducation"),
-        primary_key=True,
+        Integer, ForeignKey("universityEducation.idUniversityEducation")
     )
 
 
