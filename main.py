@@ -42,6 +42,15 @@ app.add_middleware(
         "Access-Control-Allow-Origin",
         "Authorization",
     ],
+    expose_headers=[
+        "Content-Type",
+        "Set-Cookie",
+        "Access-Control-Allow-Headers",
+        "Access-Control-Allow-Origin",
+        "Authorization",
+    ],
+    allow_headers_and_methods_condition=lambda request: True,
+    encoding="utf-8",
 )
 
 
