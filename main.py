@@ -49,8 +49,10 @@ app.add_middleware(
         "Access-Control-Allow-Origin",
         "Authorization",
     ],
-    allow_headers_and_methods_condition=lambda request: True,
-    encoding="utf-8",
+    allow_headers_and_methods=["*"],
+    max_age=3600,
+    allow_all_origins=False,
+    allow_all_methods=False,
 )
 
 
