@@ -39,6 +39,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # ----------------------------------------- Create user -----------------------------------------
 @app.post("/user/", response_model=CreateUserID)
 def create_user(user: CreateUser, db: Session = Depends(get_db)):
