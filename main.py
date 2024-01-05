@@ -26,14 +26,22 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",
+    "https://individualprojecttest.onrender.com/",
+    "http://localhost:3001",
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["POST", "GET", "PUT", "DELETE"],
+    allow_headers=[
+        "content-Type",
+        "Set-Cookie",
+        "Access-Control-Allow-Headers",
+        "Access-Control-Allow-Origin",
+        "Authorization",
+    ],
 )
 
 
