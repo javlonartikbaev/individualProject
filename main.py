@@ -30,29 +30,41 @@ origins = [
     "http://localhost:3001",
 ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["POST", "GET", "PUT", "DELETE"],
-    allow_headers=[
-        "Content-Type",
-        "Set-Cookie",
-        "Access-Control-Allow-Headers",
-        "Access-Control-Allow-Origin",
-        "Authorization",
-    ],
-    expose_headers=[
-        "Content-Type",
-        "Set-Cookie",
-        "Access-Control-Allow-Headers",
-        "Access-Control-Allow-Origin",
-        "Authorization",
-    ],
-    allow_headers_and_methods=["*"],
-    allow_all_origins=False,
-    allow_all_methods=False,
-)
+
+def register_cors(app: FastAPI):
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+
+#
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["POST", "GET", "PUT", "DELETE"],
+#     allow_headers=[
+#         "Content-Type",
+#         "Set-Cookie",
+#         "Access-Control-Allow-Headers",
+#         "Access-Control-Allow-Origin",
+#         "Authorization",
+#     ],
+#     expose_headers=[
+#         "Content-Type",
+#         "Set-Cookie",
+#         "Access-Control-Allow-Headers",
+#         "Access-Control-Allow-Origin",
+#         "Authorization",
+#     ],
+#     allow_headers_and_methods=["*"],
+#     allow_all_origins=False,
+#     allow_all_methods=False,
+# )
 
 
 # ----------------------------------------- Create user -----------------------------------------
