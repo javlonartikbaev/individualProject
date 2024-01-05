@@ -50,7 +50,6 @@ app.add_middleware(
         "Authorization",
     ],
     allow_headers_and_methods=["*"],
-    max_age=3600,
     allow_all_origins=False,
     allow_all_methods=False,
 )
